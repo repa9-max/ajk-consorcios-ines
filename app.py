@@ -45,107 +45,163 @@ ESTADOS_CERRADOS = ["Finalizado", "Cancelado"]
 # =========================
 # ESTILOS
 # =========================
+# =========================
+# ESTILOS
+# =========================
 st.markdown("""
 <style>
     .stApp {
-        background: linear-gradient(180deg, #fff9fb 0%, #f8fcff 100%);
+        background:
+            radial-gradient(circle at top right, rgba(255, 210, 222, 0.35), transparent 24%),
+            radial-gradient(circle at top left, rgba(188, 234, 255, 0.28), transparent 28%),
+            linear-gradient(180deg, #fffafc 0%, #f9fcff 100%);
     }
 
     .block-container {
         max-width: 1380px;
-        padding-top: 1.2rem;
+        padding-top: 1rem;
         padding-bottom: 2rem;
     }
 
     h1, h2, h3 {
-        color: #b46884;
+        color: #b76b85;
         letter-spacing: -0.02em;
     }
 
+    /* HERO */
     .hero {
-        background: linear-gradient(135deg, #fff5f8 0%, #fffdfd 45%, #f6fbff 100%);
-        border: 1px solid #f2d8e2;
-        border-radius: 22px;
-        padding: 22px 26px;
+        background:
+            linear-gradient(135deg, rgba(255,245,248,0.98) 0%, rgba(255,252,245,0.96) 35%, rgba(244,251,255,0.96) 100%);
+        border: 1px solid #f1d8e1;
+        border-radius: 28px;
+        padding: 24px 28px;
         margin-bottom: 18px;
-        box-shadow: 0 10px 30px rgba(182, 104, 132, 0.08);
+        box-shadow: 0 14px 35px rgba(183, 107, 133, 0.10);
+    }
+
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 130px 1fr;
+        gap: 24px;
+        align-items: center;
+    }
+
+    .hero-logo-wrap {
+        background: rgba(255,255,255,0.7);
+        border: 1px solid #f2dbe4;
+        border-radius: 24px;
+        padding: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 110px;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45);
+    }
+
+    .hero-logo-wrap img {
+        max-width: 100%;
+        max-height: 90px;
+        object-fit: contain;
     }
 
     .hero-title {
-        font-size: 2.15rem;
+        font-size: 2.45rem;
         font-weight: 800;
         color: #b46884;
-        margin-bottom: 0.35rem;
+        margin-bottom: 0.25rem;
+        line-height: 1.05;
     }
 
     .hero-sub {
-        color: #7d6d75;
-        font-size: 0.98rem;
-        margin-bottom: 0;
+        color: #7c6f76;
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
     }
 
+    .hero-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        background: #fff;
+        border: 1px solid #efd6df;
+        color: #b46884;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 0.88rem;
+        box-shadow: 0 4px 12px rgba(180,104,132,0.06);
+    }
+
+    /* METRICAS */
     .metric-card {
-        background: rgba(255,255,255,0.72);
-        border: 1px solid #efd5df;
-        border-radius: 18px;
-        padding: 16px 18px;
-        box-shadow: 0 8px 22px rgba(180, 104, 132, 0.06);
-        min-height: 112px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,252,253,0.92) 100%);
+        border: 1px solid #f0d7e1;
+        border-radius: 22px;
+        padding: 18px 18px;
+        box-shadow: 0 10px 26px rgba(183, 107, 133, 0.08);
+        min-height: 118px;
     }
 
     .metric-label {
         font-size: 0.95rem;
         color: #7d6d75;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
 
     .metric-value {
-        font-size: 2.1rem;
-        font-weight: 700;
-        color: #344054;
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: #304055;
         line-height: 1;
     }
 
+    /* TARJETAS GENERALES */
     .section-card {
-        background: rgba(255,255,255,0.72);
+        background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,253,254,0.93) 100%);
         border: 1px solid #eef1f6;
-        border-radius: 18px;
-        padding: 18px;
+        border-radius: 22px;
+        padding: 20px;
         margin-bottom: 14px;
-        box-shadow: 0 8px 22px rgba(20, 30, 50, 0.04);
+        box-shadow: 0 10px 24px rgba(40, 55, 80, 0.05);
     }
 
     .section-title {
-        font-size: 1.18rem;
-        font-weight: 700;
+        font-size: 1.22rem;
+        font-weight: 800;
         color: #b46884;
-        margin-bottom: 0.8rem;
+        margin-bottom: 0.9rem;
     }
 
+    /* ALARMAS */
     .alarm-card {
-        background: #fff6f8;
-        border: 1px solid #f0cdd9;
-        border-left: 6px solid #e59ab4;
-        border-radius: 16px;
+        background: #fff8fb;
+        border: 1px solid #f2d3de;
+        border-left: 7px solid #e39ab3;
+        border-radius: 18px;
         padding: 12px 14px;
         margin-bottom: 10px;
+        box-shadow: 0 6px 16px rgba(180,104,132,0.05);
     }
 
     .alarm-card.vencida {
-        background: #fff1f3;
-        border-color: #efb8c9;
+        background: #fff1f4;
+        border-color: #efbfd0;
         border-left-color: #d94f70;
     }
 
     .alarm-card.hoy {
-        background: #fff8f1;
-        border-color: #f3d2a9;
-        border-left-color: #e89c3d;
+        background: #fff8f0;
+        border-color: #f2d4a8;
+        border-left-color: #e59b3d;
     }
 
     .alarm-card.proxima {
-        background: #f8fbff;
-        border-color: #d9e7fb;
+        background: #f4fbff;
+        border-color: #d8e9fb;
         border-left-color: #78a9f6;
     }
 
@@ -157,7 +213,7 @@ st.markdown("""
     .cons-box {
         background: #fff;
         border: 1px solid #ece8ef;
-        border-radius: 14px;
+        border-radius: 16px;
         padding: 12px 14px;
         margin-bottom: 10px;
     }
@@ -167,32 +223,50 @@ st.markdown("""
         margin: 12px 0 16px 0;
     }
 
+    /* TABS */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 10px;
-        margin-bottom: 0.5rem;
+        gap: 12px;
+        margin-bottom: 0.9rem;
     }
 
     .stTabs [data-baseweb="tab"] {
-        background: rgba(255,255,255,0.8);
+        background: rgba(255,255,255,0.95);
         border: 1px solid #efd5df;
-        border-radius: 12px;
-        padding: 8px 14px;
+        border-radius: 14px;
+        padding: 9px 16px;
         height: auto;
+        color: #8c6677;
+        box-shadow: 0 4px 10px rgba(180,104,132,0.05);
     }
 
     .stTabs [aria-selected="true"] {
-        background: #fff4f8 !important;
-        border-color: #e6b8ca !important;
+        background: linear-gradient(180deg, #fff6f9 0%, #fffdfd 100%) !important;
+        border-color: #e7bfd0 !important;
         color: #b46884 !important;
         font-weight: 700;
     }
 
+    /* INPUTS */
+    div[data-baseweb="select"] > div,
+    .stTextInput input,
+    .stTextArea textarea,
+    .stDateInput input,
+    .stNumberInput input {
+        border-radius: 14px !important;
+    }
+
     .stDownloadButton button, .stButton button {
-        border-radius: 12px !important;
+        border-radius: 14px !important;
+    }
+
+    /* TABLAS */
+    [data-testid="stDataFrame"] {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #eef1f6;
     }
 </style>
 """, unsafe_allow_html=True)
-
 # =========================
 # HELPERS
 # =========================
