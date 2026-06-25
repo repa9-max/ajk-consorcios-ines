@@ -4,10 +4,14 @@ from io import BytesIO
 from datetime import date, datetime, timedelta
 from supabase import create_client
 
-# =========================
+# =========================================================
 # CONFIG
-# =========================
-st.set_page_config(page_title="AJK Consorcios", layout="wide")
+# =========================================================
+st.set_page_config(
+    page_title="AJK Consorcios",
+    page_icon="💗",
+    layout="wide"
+)
 
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
@@ -42,24 +46,21 @@ CATEGORIAS = [
 
 ESTADOS_CERRADOS = ["Finalizado", "Cancelado"]
 
-# =========================
+# =========================================================
 # ESTILOS
-# =========================
-# =========================
-# ESTILOS
-# =========================
+# =========================================================
 st.markdown("""
 <style>
     .stApp {
         background:
-            radial-gradient(circle at top right, rgba(255, 210, 222, 0.35), transparent 24%),
-            radial-gradient(circle at top left, rgba(188, 234, 255, 0.28), transparent 28%),
-            linear-gradient(180deg, #fffafc 0%, #f9fcff 100%);
+            radial-gradient(circle at top right, rgba(255, 209, 220, 0.35), transparent 25%),
+            radial-gradient(circle at top left, rgba(191, 236, 255, 0.28), transparent 30%),
+            linear-gradient(180deg, #fff9fb 0%, #f8fcff 100%);
     }
 
     .block-container {
-        max-width: 1380px;
-        padding-top: 1rem;
+        max-width: 1420px;
+        padding-top: 1.2rem;
         padding-bottom: 2rem;
     }
 
@@ -68,86 +69,87 @@ st.markdown("""
         letter-spacing: -0.02em;
     }
 
-    /* HERO */
-    .hero {
+    /* ---------- HERO ---------- */
+    .hero-card {
         background:
-            linear-gradient(135deg, rgba(255,245,248,0.98) 0%, rgba(255,252,245,0.96) 35%, rgba(244,251,255,0.96) 100%);
+            linear-gradient(135deg,
+                rgba(255, 247, 250, 0.98) 0%,
+                rgba(255, 252, 247, 0.96) 35%,
+                rgba(245, 252, 255, 0.96) 100%);
         border: 1px solid #f1d8e1;
-        border-radius: 28px;
-        padding: 24px 28px;
+        border-radius: 30px;
+        padding: 26px 28px;
+        box-shadow: 0 16px 34px rgba(183, 107, 133, 0.10);
         margin-bottom: 18px;
-        box-shadow: 0 14px 35px rgba(183, 107, 133, 0.10);
     }
 
     .hero-grid {
         display: grid;
-        grid-template-columns: 130px 1fr;
-        gap: 24px;
+        grid-template-columns: 150px 1fr;
+        gap: 26px;
         align-items: center;
     }
 
-    .hero-logo-wrap {
-        background: rgba(255,255,255,0.7);
-        border: 1px solid #f2dbe4;
+    .hero-logo-box {
+        background: rgba(255,255,255,0.78);
+        border: 1px solid #f2dce5;
         border-radius: 24px;
-        padding: 14px;
+        padding: 16px;
+        min-height: 116px;
         display: flex;
-        justify-content: center;
         align-items: center;
-        min-height: 110px;
-        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45);
+        justify-content: center;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
     }
 
-    .hero-logo-wrap img {
+    .hero-logo-box img {
         max-width: 100%;
-        max-height: 90px;
+        max-height: 92px;
         object-fit: contain;
     }
 
     .hero-title {
-        font-size: 2.45rem;
+        font-size: 2.6rem;
+        line-height: 1.05;
         font-weight: 800;
         color: #b46884;
-        margin-bottom: 0.25rem;
-        line-height: 1.05;
+        margin-bottom: 0.35rem;
     }
 
     .hero-sub {
-        color: #7c6f76;
+        color: #7f6e77;
         font-size: 1rem;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.85rem;
     }
 
-    .hero-badges {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 8px;
+    .hero-line {
+        height: 1px;
+        background: linear-gradient(90deg, rgba(232,195,209,0.8), rgba(232,195,209,0.08));
+        margin: 10px 0 12px 0;
     }
 
-    .hero-badge {
-        display: inline-block;
-        background: #fff;
-        border: 1px solid #efd6df;
-        color: #b46884;
-        padding: 7px 12px;
-        border-radius: 999px;
-        font-size: 0.88rem;
-        box-shadow: 0 4px 12px rgba(180,104,132,0.06);
+    .hero-mini {
+        color: #9a7081;
+        font-size: 0.92rem;
     }
 
-    /* METRICAS */
+    .heart-soft {
+        color: #d78ca7;
+        font-weight: 700;
+    }
+
+    /* ---------- MÉTRICAS ---------- */
     .metric-card {
-        background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,252,253,0.92) 100%);
+        background: linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(255,252,253,0.93) 100%);
         border: 1px solid #f0d7e1;
         border-radius: 22px;
         padding: 18px 18px;
         box-shadow: 0 10px 26px rgba(183, 107, 133, 0.08);
-        min-height: 118px;
+        min-height: 120px;
     }
 
     .metric-label {
-        font-size: 0.95rem;
+        font-size: 0.96rem;
         color: #7d6d75;
         margin-bottom: 12px;
     }
@@ -159,24 +161,34 @@ st.markdown("""
         line-height: 1;
     }
 
-    /* TARJETAS GENERALES */
+    /* ---------- TARJETAS ---------- */
     .section-card {
-        background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,253,254,0.93) 100%);
+        background: linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(255,253,254,0.94) 100%);
         border: 1px solid #eef1f6;
-        border-radius: 22px;
+        border-radius: 24px;
         padding: 20px;
         margin-bottom: 14px;
         box-shadow: 0 10px 24px rgba(40, 55, 80, 0.05);
     }
 
     .section-title {
-        font-size: 1.22rem;
+        font-size: 1.25rem;
         font-weight: 800;
         color: #b46884;
-        margin-bottom: 0.9rem;
+        margin-bottom: 0.95rem;
     }
 
-    /* ALARMAS */
+    .small-muted {
+        color: #7d6d75;
+        font-size: 0.92rem;
+    }
+
+    .divider-soft {
+        border-top: 1px solid #f1dfe6;
+        margin: 12px 0 16px 0;
+    }
+
+    /* ---------- ALARMAS ---------- */
     .alarm-card {
         background: #fff8fb;
         border: 1px solid #f2d3de;
@@ -205,12 +217,18 @@ st.markdown("""
         border-left-color: #78a9f6;
     }
 
-    .small-muted {
-        color: #7d6d75;
-        font-size: 0.92rem;
+    .alarm-title {
+        font-weight: 800;
+        color: #39485c;
     }
 
-    .cons-box {
+    .alarm-cons {
+        color: #b46884;
+        font-weight: 700;
+    }
+
+    /* ---------- BOXES ---------- */
+    .soft-box {
         background: #fff;
         border: 1px solid #ece8ef;
         border-radius: 16px;
@@ -218,15 +236,18 @@ st.markdown("""
         margin-bottom: 10px;
     }
 
-    .divider-soft {
-        border-top: 1px solid #f1dfe6;
-        margin: 12px 0 16px 0;
+    .report-box {
+        background: #fffdfd;
+        border: 1px solid #f0e5eb;
+        border-radius: 18px;
+        padding: 16px;
+        margin-bottom: 12px;
     }
 
-    /* TABS */
+    /* ---------- TABS ---------- */
     .stTabs [data-baseweb="tab-list"] {
         gap: 12px;
-        margin-bottom: 0.9rem;
+        margin-bottom: 1rem;
     }
 
     .stTabs [data-baseweb="tab"] {
@@ -246,7 +267,7 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* INPUTS */
+    /* ---------- INPUTS ---------- */
     div[data-baseweb="select"] > div,
     .stTextInput input,
     .stTextArea textarea,
@@ -255,11 +276,12 @@ st.markdown("""
         border-radius: 14px !important;
     }
 
-    .stDownloadButton button, .stButton button {
+    .stButton button,
+    .stDownloadButton button {
         border-radius: 14px !important;
     }
 
-    /* TABLAS */
+    /* ---------- DATAFRAME ---------- */
     [data-testid="stDataFrame"] {
         border-radius: 16px;
         overflow: hidden;
@@ -267,9 +289,10 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-# =========================
+
+# =========================================================
 # HELPERS
-# =========================
+# =========================================================
 def parse_iso_date(value):
     if not value:
         return None
@@ -309,6 +332,15 @@ def money_to_float(value):
     except Exception:
         return None
 
+def format_money(value):
+    if value in (None, ""):
+        return ""
+    try:
+        num = float(value)
+        return f"${num:,.0f}".replace(",", ".")
+    except Exception:
+        return str(value)
+
 def export_excel(df):
     bio = BytesIO()
     with pd.ExcelWriter(bio, engine="openpyxl") as writer:
@@ -316,39 +348,51 @@ def export_excel(df):
     bio.seek(0)
     return bio
 
-# =========================
+# =========================================================
 # SUPABASE
-# =========================
+# =========================================================
 def get_consorcios():
-    return supabase.table("consorcios").select("*").order("codigo").execute().data or []
+    try:
+        return supabase.table("consorcios").select("*").order("codigo").execute().data or []
+    except Exception:
+        return []
 
 def get_tareas(consorcio_id=None):
-    q = supabase.table("tareas").select("*").order("created_at", desc=True)
-    if consorcio_id:
-        q = q.eq("consorcio_id", consorcio_id)
-    return q.execute().data or []
+    try:
+        q = supabase.table("tareas").select("*").order("created_at", desc=True)
+        if consorcio_id:
+            q = q.eq("consorcio_id", consorcio_id)
+        return q.execute().data or []
+    except Exception:
+        return []
 
 def get_proveedores(tarea_id):
-    return (
-        supabase.table("proveedores_tarea")
-        .select("*")
-        .eq("tarea_id", tarea_id)
-        .order("orden")
-        .execute()
-        .data
-        or []
-    )
+    try:
+        return (
+            supabase.table("proveedores_tarea")
+            .select("*")
+            .eq("tarea_id", tarea_id)
+            .order("orden")
+            .execute()
+            .data
+            or []
+        )
+    except Exception:
+        return []
 
 def get_historial(tarea_id):
-    return (
-        supabase.table("historial_tareas")
-        .select("*")
-        .eq("tarea_id", tarea_id)
-        .order("fecha", desc=True)
-        .execute()
-        .data
-        or []
-    )
+    try:
+        return (
+            supabase.table("historial_tareas")
+            .select("*")
+            .eq("tarea_id", tarea_id)
+            .order("fecha", desc=True)
+            .execute()
+            .data
+            or []
+        )
+    except Exception:
+        return []
 
 def add_tarea(payload):
     res = supabase.table("tareas").insert(payload).execute().data
@@ -369,13 +413,15 @@ def add_historial(tid, detalle):
             {"tarea_id": tid, "detalle": detalle.strip()}
         ).execute()
 
-# =========================
+# =========================================================
 # UTILIDADES DE NEGOCIO
-# =========================
+# =========================================================
 def cons_label(consorcios, cid):
     for c in consorcios:
         if c["id"] == cid:
-            return f'{c["codigo"]} - {c["nombre"]}'
+            nombre = c.get("nombre", "")
+            codigo = c.get("codigo", "")
+            return f"{codigo} - {nombre}" if nombre else str(codigo)
     return str(cid)
 
 def tarea_esta_activa(t):
@@ -391,7 +437,6 @@ def tarea_pendiente_consejo(t):
     return bool(t.get("requiere_consejo")) and not bool(t.get("enviado_consejo"))
 
 def alarm_status(t):
-    """Devuelve (tipo, etiqueta) según la fecha de alarma."""
     if not t.get("alarma_activa"):
         return None, None
 
@@ -419,24 +464,56 @@ def build_tareas_table(consorcios, tareas):
             "Estado": t.get("estado", ""),
             "Fecha límite": format_date(t.get("fecha_limite")),
             "Alarma": format_date(t.get("alarma_fecha")) if t.get("alarma_activa") else "",
+            "Consejo": "Pendiente" if tarea_pendiente_consejo(t) else ("Enviado" if t.get("requiere_consejo") else ""),
             "Próximo paso": t.get("proximo_paso", ""),
         })
     return pd.DataFrame(rows)
 
-# =========================
+def resumen_tarea_para_home(t):
+    partes = [f"**{t.get('titulo','(sin título)')}**"]
+    if t.get("proximo_paso"):
+        partes.append(f"Próximo paso: {t.get('proximo_paso')}")
+    if t.get("estado"):
+        partes.append(f"Estado: {t.get('estado')}")
+    return " · ".join(partes)
+
+def get_logo_html():
+    try:
+        with open("ajk_logo.jpg", "rb") as f:
+            import base64
+            b64 = base64.b64encode(f.read()).decode()
+        return f'<img src="data:image/jpeg;base64,{b64}" alt="AJK logo">'
+    except Exception:
+        return '<div style="font-size:2rem;">💗</div>'
+
+# =========================================================
 # CARGA DE DATOS
-# =========================
+# =========================================================
 consorcios = get_consorcios()
 
-# =========================
+# =========================================================
 # HEADER
-# =========================
-st.markdown("""
-<div class="hero">
-    <div class="hero-title">AJK Consorcios</div>
-    <p class="hero-sub">
-        Panel de seguimiento de tareas, presupuestos, consejo, alarmas y reportes por consorcio.
-    </p>
+# =========================================================
+logo_html = get_logo_html()
+
+st.markdown(f"""
+<div class="hero-card">
+    <div class="hero-grid">
+        <div class="hero-logo-box">
+            {logo_html}
+        </div>
+        <div>
+            <div class="hero-title">AJK Consorcios</div>
+            <div class="hero-sub">
+                Panel de seguimiento de tareas, presupuestos, consejo, alarmas y reportes por consorcio.
+            </div>
+            <div class="hero-line"></div>
+            <div class="hero-mini">
+                Seguimiento REPA con foco en tareas, recordatorios, proveedores y reportes semanales
+                <span class="heart-soft">♡</span>
+            </div>
+        </div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -447,9 +524,9 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "Reporte por consorcio"
 ])
 
-# ============================================================
+# =========================================================
 # TAB 1 - INICIO
-# ============================================================
+# =========================================================
 with tab1:
     tareas = get_tareas()
 
@@ -460,6 +537,7 @@ with tab1:
 
     # MÉTRICAS
     m1, m2, m3, m4 = st.columns(4)
+
     with m1:
         st.markdown(f"""
         <div class="metric-card">
@@ -467,6 +545,7 @@ with tab1:
             <div class="metric-value">{len(activas)}</div>
         </div>
         """, unsafe_allow_html=True)
+
     with m2:
         st.markdown(f"""
         <div class="metric-card">
@@ -474,6 +553,7 @@ with tab1:
             <div class="metric-value">{len(urgentes)}</div>
         </div>
         """, unsafe_allow_html=True)
+
     with m3:
         st.markdown(f"""
         <div class="metric-card">
@@ -481,6 +561,7 @@ with tab1:
             <div class="metric-value">{len(con_alarma)}</div>
         </div>
         """, unsafe_allow_html=True)
+
     with m4:
         st.markdown(f"""
         <div class="metric-card">
@@ -525,33 +606,50 @@ with tab1:
                     clase += " proxima"
 
                 motivo = t.get("alarma_motivo") or "Sin motivo cargado"
+
                 st.markdown(f"""
                 <div class="{clase}">
-                    <strong>{cons_label(consorcios, t["consorcio_id"])}</strong><br>
-                    <strong>{t.get("titulo","(sin título)")}</strong><br>
-                    <span class="small-muted">{etiqueta}</span><br>
-                    <span>{motivo}</span>
+                    <div class="alarm-cons">{cons_label(consorcios, t["consorcio_id"])}</div>
+                    <div class="alarm-title">{t.get("titulo","(sin título)")}</div>
+                    <div class="small-muted">{etiqueta}</div>
+                    <div style="margin-top:4px;">{motivo}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # RESUMEN DE TAREAS
+    # RESUMEN
     with col_resumen:
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
         st.markdown('<div class="section-title">Resumen general de tareas</div>', unsafe_allow_html=True)
 
         if tareas:
-            df_inicio = build_tareas_table(consorcios, tareas)
-            st.dataframe(df_inicio, use_container_width=True, hide_index=True)
+            st.markdown("##### Próximas a mirar")
+            top_tareas = tareas[:8]
+            for t in top_tareas:
+                st.markdown(
+                    f'<div class="soft-box">{resumen_tarea_para_home(t)}</div>',
+                    unsafe_allow_html=True
+                )
         else:
             st.info("Todavía no hay tareas cargadas.")
 
         st.markdown('</div>', unsafe_allow_html=True)
 
-# ============================================================
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Vista rápida de todas las tareas</div>', unsafe_allow_html=True)
+
+    if tareas:
+        df_inicio = build_tareas_table(consorcios, tareas)
+        st.dataframe(df_inicio, use_container_width=True, hide_index=True)
+    else:
+        st.info("Todavía no hay tareas cargadas.")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# =========================================================
 # TAB 2 - NUEVA TAREA
-# ============================================================
+# =========================================================
 with tab2:
     if not consorcios:
         st.warning("No hay consorcios cargados en la base.")
@@ -591,8 +689,9 @@ with tab2:
             st.markdown("### Proveedores")
             st.caption("Podés cargar hasta 5 proveedores para esta tarea.")
             proveedores = []
+
             for i in range(1, 6):
-                p1, p2, p3, p4 = st.columns([1.5, 1, 1, 1])
+                p1, p2, p3, p4 = st.columns([1.6, 1, 1, 1])
                 nombre = p1.text_input(f"Proveedor {i}", key=f"nuevo_p_nombre_{i}")
                 pedido = p2.checkbox("Pedido", key=f"nuevo_p_pedido_{i}")
                 respondio = p3.checkbox("Respondió", key=f"nuevo_p_respondio_{i}")
@@ -601,7 +700,6 @@ with tab2:
 
             observaciones = st.text_area("Observaciones")
             primer_mov = st.text_area("Primer movimiento / nota interna")
-
             guardar = st.form_submit_button("Guardar tarea")
 
             if guardar:
@@ -649,9 +747,9 @@ with tab2:
 
         st.markdown('</div>', unsafe_allow_html=True)
 
-# ============================================================
+# =========================================================
 # TAB 3 - TAREAS
-# ============================================================
+# =========================================================
 with tab3:
     tareas = get_tareas()
 
@@ -680,9 +778,6 @@ with tab3:
             proveedores = get_proveedores(tarea["id"])
             historial = get_historial(tarea["id"])
 
-            # -------------------------
-            # FORM TAREA
-            # -------------------------
             st.markdown("### Datos de la tarea")
             with st.form(f"editar_tarea_{tarea['id']}"):
                 e1, e2 = st.columns(2)
@@ -753,14 +848,12 @@ with tab3:
 
             st.markdown("<div class='divider-soft'></div>", unsafe_allow_html=True)
 
-            # -------------------------
-            # PROVEEDORES
-            # -------------------------
             st.markdown("### Proveedores de esta tarea")
 
             if proveedores:
                 for p in proveedores:
-                    with st.expander(f"Proveedor #{p.get('orden', '')}: {p.get('nombre', 'Sin nombre')}"):
+                    titulo_exp = f"Proveedor #{p.get('orden', '')}: {p.get('nombre', 'Sin nombre')}"
+                    with st.expander(titulo_exp):
                         with st.form(f"prov_{p['id']}"):
                             pc1, pc2, pc3, pc4 = st.columns([1.4, 1, 1, 1])
                             p_nombre = pc1.text_input("Nombre", value=p.get("nombre", ""))
@@ -807,15 +900,12 @@ with tab3:
 
             st.markdown("<div class='divider-soft'></div>", unsafe_allow_html=True)
 
-            # -------------------------
-            # HISTORIAL
-            # -------------------------
             st.markdown("### Historial de movimientos")
             if historial:
                 for h in historial:
                     fecha_h = h.get("fecha") or h.get("created_at") or ""
                     st.markdown(f"""
-                    <div class="cons-box">
+                    <div class="soft-box">
                         <strong>{fecha_h}</strong><br>
                         {h.get("detalle", "")}
                     </div>
@@ -825,9 +915,9 @@ with tab3:
 
         st.markdown('</div>', unsafe_allow_html=True)
 
-# ============================================================
+# =========================================================
 # TAB 4 - REPORTE POR CONSORCIO
-# ============================================================
+# =========================================================
 with tab4:
     if not consorcios:
         st.warning("No hay consorcios cargados.")
@@ -844,7 +934,10 @@ with tab4:
             st.info("Ese consorcio no tiene tareas.")
         else:
             st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown(f'<div class="section-title">{cons["codigo"]} - {cons["nombre"]}</div>', unsafe_allow_html=True)
+            st.markdown(
+                f'<div class="section-title">{cons["codigo"]} - {cons["nombre"]}</div>',
+                unsafe_allow_html=True
+            )
             st.caption("Este reporte incluye todas las tareas del consorcio, incluso finalizadas y canceladas.")
 
             texto = []
@@ -883,7 +976,7 @@ with tab4:
                         if p.get("presupuesto_recibido"):
                             partes.append("respondió")
                         if p.get("monto") is not None:
-                            partes.append(f"monto: {p['monto']}")
+                            partes.append(f"monto: {format_money(p['monto'])}")
                         texto.append("   - " + " | ".join(partes))
 
                 texto.append("")
@@ -901,11 +994,13 @@ with tab4:
                     "Motivo alarma": t.get("alarma_motivo", "") if t.get("alarma_activa") else "",
                 })
 
+            st.markdown('<div class="report-box">', unsafe_allow_html=True)
             st.text_area(
                 "Resumen del consorcio",
                 value="\n".join(texto),
                 height=520
             )
+            st.markdown('</div>', unsafe_allow_html=True)
 
             df_rep = pd.DataFrame(rows)
             st.dataframe(df_rep, use_container_width=True, hide_index=True)
