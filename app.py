@@ -6,6 +6,7 @@ from supabase import create_client
 import base64
 
 from styles import aplicar_estilo
+
 # =========================================================
 # CONFIG
 # =========================================================
