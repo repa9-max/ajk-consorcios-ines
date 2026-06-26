@@ -5,7 +5,6 @@ from datetime import date, datetime, timedelta
 from supabase import create_client
 import base64
 
-from styles import aplicar_estilo
 
 # =========================================================
 # CONFIG
@@ -16,7 +15,6 @@ st.set_page_config(
     layout="wide"
 )
 
-aplicar_estilo()
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
