@@ -13,7 +13,25 @@ st.set_page_config(
     page_icon="💗",
     layout="wide"
 )
+st.markdown("""
+<style>
 
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+html, body, [class*="css"]{
+    font-family:'Poppins',sans-serif;
+}
+
+h1,h2,h3{
+    font-family:'Cormorant Garamond',serif !important;
+}
+
+.stApp{
+    background:#FFFDF9;
+}
+
+</style>
+""", unsafe_allow_html=True)
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
