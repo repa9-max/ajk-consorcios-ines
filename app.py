@@ -1432,3 +1432,5 @@ with tab6:
         st.info("No hay tareas cargadas.")
 
     st.markdown('</div>', unsafe_allow_html=True)
+    
+Agregar estilos base
