@@ -1,3 +1,4 @@
+from styles import aplicar_estilo
 import pandas as pd
 import streamlit as st
 from io import BytesIO
@@ -13,6 +14,7 @@ st.set_page_config(
     page_icon="💗",
     layout="wide"
 )
+aplicar_estilo()
 st.markdown("""
 <style>
 
@@ -372,9 +374,9 @@ def export_excel(df, sheet_name="Reporte"):
 
 def get_logo_html():
     try:
-        with open("ajk_logo.jpg", "rb") as f:
+        with open("ajk_logo.png", "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
-        return f'<img src="data:image/jpeg;base64,{b64}" alt="logo">'
+            return f'<img src="data:image/png;base64,{b64}" alt="logo">'
     except Exception:
         return '<div style="font-size:2rem;">💗</div>'
 
@@ -900,12 +902,7 @@ with tab2:
                         "estado": estado,
                         "fecha_limite": to_iso_or_none(fecha_limite),
                         "proximo_paso": proximo_paso.strip() if proximo_paso else "",
-                        "requiere_consejo": requiere_consejo,
-                        "enviado_consejo": enviado_consejo,
-                        "observaciones": observaciones.strip() if observaciones else "",
-                        "alarma_activa": alarma_activa,
-                        "alarma_fecha": to_iso_or_none(alarma_fecha) if alarma_activa else None,
-                        "alarma_motivo": alarma_motivo.strip() if alarma_motivo else None,
+                        
                     }
 
                     tarea = add_tarea(payload)
